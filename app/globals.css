@@ -1,116 +1,148 @@
 @import "tailwindcss";
 
+/* ========== COLOR & GLOW TOKENS ========== */
 :root {
   --bg1: #020617;
-  --bg2: #051e2e;
+  --bg2: #041a28;
+  --panel: rgba(255,255,255,0.04);
+  --panel-border: rgba(0,255,255,0.18);
   --neon: #00eaff;
-  --glass: rgba(255,255,255,0.05);
-  --glass-border: rgba(255,255,255,0.18);
-  --font-glow: 0 0 6px var(--neon), 0 0 18px var(--neon);
+  --glow: 0 0 6px var(--neon), 0 0 14px var(--neon), 0 0 24px var(--neon);
+  --glow-soft: 0 0 6px var(--neon);
 }
 
-/* 背景 グラデーション薄め + 動き */
-.fade-bg {
+/* ========== BODY BACKGROUND (全画面) ========== */
+body {
   background: linear-gradient(130deg, var(--bg1), var(--bg2));
-  animation: slowGradient 16s ease infinite;
+  animation: slowBackground 18s ease infinite;
+  min-height: 100vh;
+  color: #e9ffff;
+  font-family: Arial, Helvetica, sans-serif;
+  background-size: 200% 200%;
 }
 
-@keyframes slowGradient {
+@keyframes slowBackground {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* タイトル脈動ネオン */
+
+/* ========== CENTRAL GLASS PANEL ========== */
+.container-center {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 40px;
+  background: var(--panel);
+  border-radius: 18px;
+  border: 1px solid var(--panel-border);
+  box-shadow:
+    0 0 40px rgba(0, 255, 255, 0.08),
+    inset 0 0 20px rgba(0, 255, 255, 0.05);
+  backdrop-filter: blur(14px);
+  position: relative;
+}
+
+/* コーナーのサイバーライン */
+.container-center::before,
+.container-center::after {
+  content:"";
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border: 2px solid var(--neon);
+  opacity: 0.16;
+  border-radius: 8px;
+}
+
+.container-center::before {
+  top: -10px;
+  left: -10px;
+  border-right: none;
+  border-bottom: none;
+}
+.container-center::after {
+  bottom: -10px;
+  right: -10px;
+  border-left: none;
+  border-top: none;
+}
+
+
+/* ========== NEON TITLES ========== */
 .neon-title {
-  font-size: 3.5rem;
-  margin-bottom: 10px;
+  font-size: 3.6rem;
   color: var(--neon);
-  text-shadow: var(--font-glow);
-  animation: pulse 3.5s infinite ease-in-out;
+  text-shadow: var(--glow);
+  animation: pulse 3.2s infinite ease-in-out;
 }
 
 @keyframes pulse {
-  0% { text-shadow: 0 0 4px var(--neon); }
-  50% { text-shadow: 0 0 14px var(--neon), 0 0 28px var(--neon); }
-  100% { text-shadow: 0 0 4px var(--neon); }
+  0% { text-shadow: var(--glow-soft); }
+  50% { text-shadow: var(--glow); }
+  100% { text-shadow: var(--glow-soft); }
 }
 
-/* 単語 Subtitle */
 .subtitle {
   color: #bdefff;
-  margin-bottom: 22px;
+  font-size: 1.2rem;
+  margin-bottom: 18px;
 }
 
-/* 説明テキスト */
 .intro {
   max-width: 600px;
-  font-size: 1rem;
-  line-height: 1.7;
+  line-height: 1.6;
   margin-bottom: 40px;
   color: #e6ffff;
 }
 
-/* カードグリッド */
+
+/* ========== CARD GRID & GLASS CARDS ========== */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
 }
 
-/* ガラス ＋ ネオン ボーダー */
 .neon-card.glass {
   padding: 18px;
-  border-radius: 12px;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(14px);
-  transition: 0.3s ease;
-  color: #c9faff;
-}
-
-/* Hoverで発光する */
-.neon-card.glass:hover {
-  border-color: var(--neon);
-  box-shadow: 0 0 14px var(--neon);
-  transform: translateY(-4px);
-}
-
-/* レイアウト共通 */
-.container-center {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 30px;
-}
-
-/* =============================
-   CLICK RIPPLE + 3D PRESS
-============================= */
-
-.neon-card.glass {
+  border-radius: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px);
+  transition: 0.3s;
+  color: #d7ffff;
   position: relative;
   overflow: hidden;
 }
 
+/* Hover: 浮上 + 枠光る */
+.neon-card.glass:hover {
+  border-color: var(--neon);
+  box-shadow: 0 0 14px var(--neon);
+  transform: translateY(-6px);
+}
+
+/* Click: 押し込まれた立体 */
 .neon-card.glass:active {
-  transform: scale(0.96); /* 押し込まれた感じ */
-  box-shadow: 0 0 10px var(--neon), inset 0 0 15px var(--neon);
+  transform: scale(0.96);
+  box-shadow: inset 0 0 18px var(--neon), 0 0 8px var(--neon);
 }
 
-/* 波紋用エフェクト */
+/* Ripple Effect origin marker */
 .neon-card.glass::after {
-  content: "";
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background: var(--neon);
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(1);
-  transition: none;
+  content:"";
+  position:absolute;
+  width:10px;
+  height:10px;
+  background:var(--neon);
+  border-radius:50%;
+  pointer-events:none;
+  opacity:0;
+  transform:translate(-50%, -50%) scale(1);
 }
 
+/* Ripple Animation */
 .neon-card.glass.clicked::after {
   animation: ripple 0.55s ease-out;
 }
@@ -121,11 +153,11 @@
     transform: translate(var(--x), var(--y)) scale(0);
   }
   70% {
-    opacity: 0.2;
+    opacity: 0.25;
     transform: translate(var(--x), var(--y)) scale(12);
   }
   100% {
     opacity: 0;
-    transform: translate(var(--x), var(--y)) scale(15);
+    transform: translate(var(--x), var(--y)) scale(17);
   }
 }

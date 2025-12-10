@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useRef } from "react";
+import { useCallback } from "react";
 
 export default function Home() {
 
-  const ripple = (e: any) => {
+  const ripple = useCallback((e: any) => {
     const card = e.currentTarget;
-    
+
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -17,11 +17,13 @@ export default function Home() {
     card.classList.remove("clicked");
     void card.offsetWidth;
     card.classList.add("clicked");
-  };
+  }, []);
 
   return (
-    <div className="container-center fade-bg">
-      <h1 className="neon-title glow">HELO LAB</h1>
+    <div className="container-center">
+      
+      {/* ===== TITLE ===== */}
+      <h1 className="neon-title">HELO LAB</h1>
       <h2 className="subtitle">Ideas to Reality</h2>
 
       <p className="intro">
@@ -29,6 +31,7 @@ export default function Home() {
         頭に浮かんだ「やってみたい」を、ひとつずつ現実にしていく個人ラボ。
       </p>
 
+      {/* ===== MENU CARDS ===== */}
       <div className="card-grid">
         {[
           { href: "/projects", title: "Projects", text: "進行中／完了プロジェクト" },
@@ -42,8 +45,10 @@ export default function Home() {
             className="neon-card glass"
             onClick={ripple}
           >
-            <h3>{item.title}</h3>
-            <p>{item.text}</p>
+            <h3 style={{ fontSize: "1.1rem", marginBottom: "6px", color: "#aff" }}>
+              {item.title}
+            </h3>
+            <p style={{ fontSize: "0.9rem", opacity: 0.9 }}>{item.text}</p>
           </Link>
         ))}
       </div>
