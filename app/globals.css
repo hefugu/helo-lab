@@ -1,94 +1,84 @@
 @import "tailwindcss";
 
-/* =============================
-   Theme Base
-============================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-
-  /* Neon accent colors */
-  --neon-accent: #00eaff;
-  --neon-soft: rgba(0, 234, 255, 0.25);
-  --neon-strong: rgba(0, 234, 255, 0.8);
-
-  /* Glass panel */
-  --glass-bg: rgba(0, 234, 255, 0.05);
-  --glass-border: rgba(0, 234, 255, 0.22);
-
-  /* Fonts (respect Next.js geist imports) */
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --bg1: #020617;
+  --bg2: #051e2e;
+  --neon: #00eaff;
+  --glass: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.18);
+  --font-glow: 0 0 6px var(--neon), 0 0 18px var(--neon);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* 背景 グラデーション薄め + 動き */
+.fade-bg {
+  background: linear-gradient(130deg, var(--bg1), var(--bg2));
+  animation: slowGradient 16s ease infinite;
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: radial-gradient(circle at 20% 20%, #001118, #000000 70%);
-    --foreground: #dffeff;
-  }
+@keyframes slowGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* =============================
-   Global
-============================= */
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  margin: 0;
-}
-
-/* Remove link underlines */
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* =============================
-   Neon Title (HELO LAB)
-============================= */
+/* タイトル脈動ネオン */
 .neon-title {
-  color: var(--neon-accent);
-  text-shadow:
-    0 0 6px var(--neon-strong),
-    0 0 14px var(--neon-strong),
-    0 0 26px var(--neon-strong);
-  font-weight: 600;
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+  color: var(--neon);
+  text-shadow: var(--font-glow);
+  animation: pulse 3.5s infinite ease-in-out;
 }
 
-/* =============================
-   Glass Neon Card
-============================= */
-.neon-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px) saturate(180%);
-  -webkit-backdrop-filter: blur(10px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
+@keyframes pulse {
+  0% { text-shadow: 0 0 4px var(--neon); }
+  50% { text-shadow: 0 0 14px var(--neon), 0 0 28px var(--neon); }
+  100% { text-shadow: 0 0 4px var(--neon); }
+}
+
+/* 単語 Subtitle */
+.subtitle {
+  color: #bdefff;
+  margin-bottom: 22px;
+}
+
+/* 説明テキスト */
+.intro {
+  max-width: 600px;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  color: #e6ffff;
+}
+
+/* カードグリッド */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* ガラス ＋ ネオン ボーダー */
+.neon-card.glass {
   padding: 18px;
-  transition: 0.25s ease;
-  box-shadow: 0 0 10px var(--neon-soft);
+  border-radius: 12px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  transition: 0.3s ease;
+  color: #c9faff;
 }
 
-.neon-card:hover {
-  border-color: var(--neon-accent);
-  box-shadow:
-    0 0 12px var(--neon-accent),
-    0 0 30px var(--neon-accent);
-  transform: translateY(-3px);
+/* Hoverで発光する */
+.neon-card.glass:hover {
+  border-color: var(--neon);
+  box-shadow: 0 0 14px var(--neon);
+  transform: translateY(-4px);
 }
 
-/* Section layout padding */
+/* レイアウト共通 */
 .container-center {
-  max-width: 960px;
-  margin: 40px auto;
-  padding: 0 20px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 30px;
 }
