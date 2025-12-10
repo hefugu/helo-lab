@@ -1,95 +1,115 @@
 @import "tailwindcss";
 
-/* ===== Theme Colors ===== */
 :root {
   --bg1: #020617;
-  --bg2: #041423;
+  --bg2: #051e2e;
   --neon: #00eaff;
-  --neon-soft: rgba(0, 234, 255, 0.4);
-  --glass: rgba(255,255,255,0.05);
-  --glass-border: rgba(255,255,255,0.15);
-  --font-glow: 0 0 6px var(--neon), 0 0 16px var(--neon-soft);
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(0, 255, 255, 0.22);
+  --font-glow: 0 0 8px var(--neon), 0 0 22px var(--neon);
+
+  --panel-bg: rgba(3, 14, 22, 0.65);
+  --panel-border: rgba(0, 255, 255, 0.28);
+  --panel-shadow: 0 0 18px rgba(0,255,255,0.08);
 }
 
-/* ===== Background Gradient Motion (very slow) ===== */
-.fade-bg {
-  background: linear-gradient(145deg, var(--bg1), var(--bg2) 70%);
-  min-height: 100vh;
+/* 🔷 背景グラデーション + 微動 */
+body {
+  background: linear-gradient(130deg, var(--bg1), var(--bg2));
+  background-size: 300% 300%;
+  animation: bgMove 22s ease infinite;
+  color: #eaffff;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ===== Title Neon (Static glow) ===== */
-.neon-title {
-  font-size: 3.2rem;
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+/* ================== HEADER - CYBER OS BAR ================== */
+.cyber-header {
+  background: var(--panel-bg);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--panel-border);
+  box-shadow: var(--panel-shadow), inset 0 -1px 15px rgba(0,255,255,0.04);
+  padding: 14px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cyber-title {
+  font-size: 1.7rem;
   color: var(--neon);
   text-shadow: var(--font-glow);
   letter-spacing: 2px;
-  margin-bottom: 12px;
+  font-weight: bold;
+  user-select: none;
 }
 
-/* sub text */
-.subtitle {
-  color: #bdefff;
-  margin-bottom: 14px;
-  font-size: 1.2rem;
+.cyber-header nav a {
+  margin-left: 28px;
+  color: #a6faff;
+  letter-spacing: 0.06em;
+  transition: .25s;
 }
 
-/* intro text */
-.intro {
-  max-width: 650px;
-  font-size: 1rem;
-  line-height: 1.7;
-  margin-bottom: 44px;
-  color: #defaff;
+.cyber-header nav a:hover {
+  color: var(--neon);
+  text-shadow: 0 0 10px var(--neon);
 }
 
-/* ===== Main Glass Panel ===== */
-.glass-panel {
-  background: rgba(0, 0, 0, 0.23);
-  border: 1px solid rgba(0, 234, 255, 0.1);
+
+/* ================== CENTER MAIN PANEL ================== */
+
+.main-panel {
+  max-width: 1100px;
+  margin: 80px auto;
+  padding: 45px;
+  background: var(--panel-bg);
   border-radius: 18px;
-  padding: 45px 55px;
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--panel-shadow), inset 0 0 45px rgba(0,255,255,0.03);
   backdrop-filter: blur(18px);
-  position: relative;
-  box-shadow:
-    0 0 34px rgba(0, 234, 255, 0.1),
-    inset 0 0 44px rgba(0, 0, 0, 0.25);
 }
 
-/* subtle glowing frame */
-.glass-panel::before {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  border-radius: 18px;
-  border: 1px solid rgba(0, 234, 255, 0.25);
-  filter: blur(8px);
-  opacity: 0.35;
-}
 
-/* ===== cards inside glass panel ===== */
+/* ================== FUTURE APP CARDS ================== */
+
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
 }
 
-/* glass neon card */
-.neon-card {
-  padding: 18px;
-  border-radius: 12px;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(14px);
-  transition: 0.25s;
-  color: #c9faff;
+.cyber-card {
+  background: rgba(255,255,255,0.035);
+  padding: 20px;
+  border: 1px solid rgba(0,255,255,0.18);
+  border-radius: 10px;
+  backdrop-filter: blur(12px);
+  transition: .25s;
+  position: relative;
 }
 
-/* hover – clean glow */
-.neon-card:hover {
+.cyber-card:hover {
   border-color: var(--neon);
-  box-shadow: 0 0 14px var(--neon);
-  transform: translateY(-4px);
+  box-shadow: 0 0 18px rgba(0,255,255,0.45);
+  transform: translateY(-3px);
+}
+
+.cyber-card h3 {
+  color: var(--neon);
+  margin-bottom: 6px;
+  text-shadow: 0 0 8px var(--neon);
+}
+
+.cyber-card p {
+  color: #c4f7ff;
+  font-size: .93rem;
+  line-height: 1.5;
 }
