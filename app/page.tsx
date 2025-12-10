@@ -1,29 +1,52 @@
-export default function Home() {
+import '.globals.css';
+
+
+export const metadata = {
+  title: "HELO LAB",
+  description: "Ideas to Reality",
+};
+
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <main
-      style={{
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+    <html lang="en">
+      <body style={{
+        margin: 0,
         backgroundColor: "#050505",
         color: "#d0faff",
         fontFamily: "monospace",
-        textAlign: "center",
-      }}
-    >
-      <h1 style={{ fontSize: "3.2rem", fontWeight: "bold", marginBottom: "0.5rem", color: "#00eaff" }}>
-        HELO LAB
-      </h1>
+      }}>
+        
 
-      <h2 style={{ fontSize: "1.3rem", marginBottom: "0.5rem", color: "#a8f7ff" }}>
-        Ideas to Reality
-      </h2>
+        <nav style={{
+          display: "flex",
+          gap: "20px",
+          padding: "15px 30px",
+          borderBottom: "1px solid #00eaff55",
+          position: "sticky",
+          top: 0,
+          backgroundColor: "#050505bb",
+          backdropFilter: "blur(3px)",
+        }}>
+          <a href="/" style={{ color: "#00eaff", textDecoration: "none"}}>HELO LAB</a>
+          <a href="/projects" style={{ color: "#d0faff", textDecoration: "none"}}>Projects</a>
+          <a href="/blog" style={{ color: "#d0faff", textDecoration: "none"}}>Blog</a>
+          <a href="/research" style={{ color: "#d0faff", textDecoration: "none"}}>Research</a>
+          <a href="/gallery" style={{ color: "#d0faff", textDecoration: "none"}}>Gallery</a>
+          <a href="/about" style={{ color: "#d0faff", textDecoration: "none"}}>About</a>
+          <a href="/contact" style={{ color: "#d0faff", textDecoration: "none"}}>Contact</a>
+        </nav>
 
-      <p style={{ fontSize: "0.9rem", opacity: 0.8 }}>
-        Bridging imagination and engineering.
-      </p>
-    </main>
+        <div style={{ padding: "50ox"}}>
+          {children}
+        </div>
+
+
+      </body>
+    </html>
   );
 }
