@@ -1,3 +1,8 @@
 export default function Page() {
-  return <h1 style={{ color: '#00eaff' }}>Coming Soon...</h1>;
+  return (
+    <div className="container-center">
+      <h1 className="neon-title">About HELO LAB</h1>
+      <p>ラボの目的、思想、活動範囲を記載。</p>
+    </div>
+  );
 }

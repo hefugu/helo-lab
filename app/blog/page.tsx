@@ -1,3 +1,8 @@
 export default function Page() {
-  return <h1 style={{ color: '#00eaff' }}>Coming Soon...</h1>;
+  return (
+    <div className="container-center">
+      <h1 className="neon-title">Blog</h1>
+      <p>実験日記 / 解決まとめ / エラーログなどを書く場所。</p>
+    </div>
+  );
 }

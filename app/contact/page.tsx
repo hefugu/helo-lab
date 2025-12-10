@@ -1,3 +1,8 @@
 export default function Page() {
-  return <h1 style={{ color: '#00eaff' }}>Coming Soon...</h1>;
+  return (
+    <div className="container-center">
+      <h1 className="neon-title">Contact</h1>
+      <p>問い合わせはフォーム or SNSリンク。</p>
+    </div>
+  );
 }

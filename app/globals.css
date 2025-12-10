@@ -1,8 +1,24 @@
 @import "tailwindcss";
 
+/* =============================
+   Theme Base
+============================= */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Neon accent colors */
+  --neon-accent: #00eaff;
+  --neon-soft: rgba(0, 234, 255, 0.25);
+  --neon-strong: rgba(0, 234, 255, 0.8);
+
+  /* Glass panel */
+  --glass-bg: rgba(0, 234, 255, 0.05);
+  --glass-border: rgba(0, 234, 255, 0.22);
+
+  /* Fonts (respect Next.js geist imports) */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 @theme inline {
@@ -12,15 +28,67 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: radial-gradient(circle at 20% 20%, #001118, #000000 70%);
+    --foreground: #dffeff;
   }
 }
 
+/* =============================
+   Global
+============================= */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+/* Remove link underlines */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =============================
+   Neon Title (HELO LAB)
+============================= */
+.neon-title {
+  color: var(--neon-accent);
+  text-shadow:
+    0 0 6px var(--neon-strong),
+    0 0 14px var(--neon-strong),
+    0 0 26px var(--neon-strong);
+  font-weight: 600;
+}
+
+/* =============================
+   Glass Neon Card
+============================= */
+.neon-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 18px;
+  transition: 0.25s ease;
+  box-shadow: 0 0 10px var(--neon-soft);
+}
+
+.neon-card:hover {
+  border-color: var(--neon-accent);
+  box-shadow:
+    0 0 12px var(--neon-accent),
+    0 0 30px var(--neon-accent);
+  transform: translateY(-3px);
+}
+
+/* Section layout padding */
+.container-center {
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 0 20px;
 }
