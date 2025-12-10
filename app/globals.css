@@ -82,3 +82,61 @@
   margin: 0 auto;
   padding: 30px;
 }
+
+/* =============================
+   CLICK RIPPLE + 3D PRESS
+============================= */
+
+.neon-card.glass {
+  position: relative;
+  overflow: hidden;
+}
+
+.neon-card.glass:active {
+  transform: scale(0.96); /* 押し込まれた感じ */
+  box-shadow: 0 0 10px var(--neon), inset 0 0 15px var(--neon);
+}
+
+/* 波紋用エフェクト */
+.neon-card.glass::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--neon);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1);
+  transition: none;
+}
+
+.neon-card.glass.clicked::after {
+  animation: ripple 0.55s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    opacity: 0.6;
+    transform: translate(var(--x), var(--y)) scale(0);
+  }
+  70% {
+    opacity: 0.2;
+    transform: translate(var(--x), var(--y)) scale(12);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) scale(15);
+  }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image:
+    linear-gradient(rgba(0,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,255,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
