@@ -3,33 +3,42 @@ import Link from "next/link";
 
 export default function Home() {
 
-  const modules = [
-    { href: "/projects", title: "Projects", text: "進行中／完了プロジェクト" },
-    { href: "/blog", title: "Blog", text: "研究ログと実験メモ" },
-    { href: "/research", title: "Research", text: "制御・AI・アルゴリズム" },
-    { href: "/gallery", title: "Gallery", text: "回路・写真・成果物" },
-  ];
+  const ripple = (e: any) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty("--x", x + "px");
+    card.style.setProperty("--y", y + "px");
+    card.classList.remove("clicked");
+    void card.offsetWidth;
+    card.classList.add("clicked");
+  };
 
   return (
-    <main className="main-panel">
-      <h1 className="cyber-title" style={{ fontSize: "3.2rem", marginBottom: "8px" }}>
-        HELO LAB
+    <div>
+      <h1 className="nav-brand" style={{ fontSize: "3rem", marginBottom: "10px" }}>
+        HELO LABO
       </h1>
-      <h2 style={{ color: "#c7faff", marginBottom: "26px" }}>Ideas to Reality</h2>
 
-      <p style={{ maxWidth: "720px", lineHeight: 1.7, fontSize: "1rem", marginBottom: "40px", color: "#e6ffff" }}>
+      <p style={{ color: "#c9faff", maxWidth: "720px", lineHeight: 1.6 }}>
         電子工作、プログラミング、自作PC、ロボット、シミュレータ。
-        頭に浮かんだ「やってみたい」を、ひとつずつ現実にしていく個人ラボ。
+        「やってみたい」をひとつずつ現実にしていく個人ラボ。
       </p>
 
-      <div className="card-grid">
-        {modules.map((item) => (
-          <Link key={item.title} href={item.href} className="cyber-card">
+      <div className="card-grid" style={{ marginTop: "30px" }}>
+        {[
+          { href: "/projects", title: "Projects", text: "進行中 / 完了 / 設計" },
+          { href: "/blog", title: "Blog", text: "日常・メモ" },
+          { href: "/research", title: "Research", text: "制御・AI・アルゴリズム" },
+          { href: "/gallery", title: "Gallery", text: "写真・回路・可視化" },
+        ].map((item) => (
+          <Link key={item.title} href={item.href} className="neon-card" onClick={ripple}>
             <h3>{item.title}</h3>
             <p>{item.text}</p>
           </Link>
         ))}
       </div>
-    </main>
+    </div>
   );
 }

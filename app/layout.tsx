@@ -1,19 +1,24 @@
-import "./globals.css";
+"use client";
 import Link from "next/link";
+import "./globals.css";
 
-export const metadata = {
-  title: "HELO LAB OS",
-  description: "Cyberpunk Personal Research Lab UI",
-};
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ja">
-      <body>
-        <header className="cyber-header">
-          <div className="cyber-title">HELO LAB OS</div>
+      <body className="fade-bg">
 
-          <nav>
+        {/* ─────── HEADER ─────── */}
+        <header className="top-nav">
+
+          <Link href="/" className="nav-brand">
+            HELO LABO
+          </Link>
+
+          <nav className="nav-links">
             <Link href="/projects">Projects</Link>
             <Link href="/blog">Blog</Link>
             <Link href="/research">Research</Link>
@@ -21,9 +26,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/about">About</Link>
             <Link href="/contact">Contact</Link>
           </nav>
+
         </header>
 
-        {children}
+        {/* ─────── PAGE CONTENT ─────── */}
+        <main className="main-panel">
+          {children}
+        </main>
+
       </body>
     </html>
   );
