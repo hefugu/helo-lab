@@ -1,6 +1,11 @@
-"use client";
-import Link from "next/link";
 import "./globals.css";
+import Link from "next/link";
+import BackButton from "./components/BackButton";
+
+export const metadata = {
+  title: "HELO LAB",
+  description: "電子工作・プログラミング・自作PC・ロボット開発ラボ。",
+};
 
 export default function RootLayout({
   children,
@@ -9,31 +14,36 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className="fade-bg">
+      <body>
+        {/* ==============================
+            ナビゲーションバー
+        ============================== */}
+        <nav className="nav-bar">
+          <div className="nav-brand">
+            <a href="/">HELO LAB</a>
+          </div>
 
-        {/* ─────── HEADER ─────── */}
-        <header className="top-nav">
+          <ul className="nav-links">
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/blog">Blog</a></li>
+            <li><a href="/gallery">Gallery</a></li>
+            <li><a href="/distribution">Distribution</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </nav>
 
-          <Link href="/" className="nav-brand">
-            HELO LABO
-          </Link>
+        {/* ==============================
+            戻るボタン（HOME以外で表示）
+        ============================== */}
+        <BackButton />
 
-          <nav className="nav-links">
-            <Link href="/projects">Projects</Link>
-            <Link href="/blog">Blog</Link>
-            <Link href="/research">Research</Link>
-            <Link href="/gallery">Gallery</Link>
-            <Link href="/about">About</Link>
-            <Link href="/contact">Contact</Link>
-          </nav>
-
-        </header>
-
-        {/* ─────── PAGE CONTENT ─────── */}
-        <main className="main-panel">
+        {/* ==============================
+            ページ本体
+        ============================== */}
+        <main className="main-panel fade-bg">
           {children}
         </main>
-
       </body>
     </html>
   );

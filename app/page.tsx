@@ -1,41 +1,54 @@
 "use client";
+
 import Link from "next/link";
 
-export default function Home() {
-
-  const ripple = (e: any) => {
+export default function HomePage() {
+  const ripple = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    card.style.setProperty("--x", x + "px");
-    card.style.setProperty("--y", y + "px");
+
+    const x = e.clientX - rect.left + "px";
+    const y = e.clientY - rect.top + "px";
+
+    card.style.setProperty("--x", x);
+    card.style.setProperty("--y", y);
+
+    // 波紋リセット&再生
     card.classList.remove("clicked");
     void card.offsetWidth;
     card.classList.add("clicked");
   };
 
+  const pages = [
+    { href: "/projects", title: "Projects", text: "進行中／完了プロジェクト" },
+    { href: "/blog", title: "Blog", text: "研究ログ・実験メモ" },
+    { href: "/gallery", title: "Gallery", text: "画像・回路・成果物" },
+    { href: "/distribution", title: "Distribution", text: "ツール・資料・アプリ配布" },
+    { href: "/about", title: "About", text: "HELO LAB について" },
+    { href: "/contact", title: "Contact", text: "連絡方法・SNS" },
+  ];
+
   return (
     <div>
-      <h1 className="nav-brand" style={{ fontSize: "3rem", marginBottom: "10px" }}>
-        HELO LABO
-      </h1>
+      <h1 className="neon-title">HELO LAB</h1>
+      <h2 className="subtitle">Ideas to Reality</h2>
 
-      <p style={{ color: "#c9faff", maxWidth: "720px", lineHeight: 1.6 }}>
-        電子工作、プログラミング、自作PC、ロボット、シミュレータ。
-        「やってみたい」をひとつずつ現実にしていく個人ラボ。
+      <p className="intro-text">
+        電子工作、プログラミング、自作PC、ロボット、シミュレータ。  
+        頭に浮かんだ「やってみたい」を、ひとつずつ現実にしていく個人ラボ。
       </p>
 
-      <div className="card-grid" style={{ marginTop: "30px" }}>
-        {[
-          { href: "/projects", title: "Projects", text: "進行中 / 完了 / 設計" },
-          { href: "/blog", title: "Blog", text: "日常・メモ" },
-          { href: "/research", title: "Research", text: "制御・AI・アルゴリズム" },
-          { href: "/gallery", title: "Gallery", text: "写真・回路・可視化" },
-        ].map((item) => (
-          <Link key={item.title} href={item.href} className="neon-card" onClick={ripple}>
-            <h3>{item.title}</h3>
-            <p>{item.text}</p>
+      {/* HOME 専用グリッド */}
+      <div className="home-grid">
+        {pages.map((p) => (
+          <Link
+            key={p.href}
+            href={p.href}
+            className="neon-link-card"
+            onClick={ripple}
+          >
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
           </Link>
         ))}
       </div>
