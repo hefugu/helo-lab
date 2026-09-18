@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Quick Poker</title>
+<style>
+:root{color-scheme:dark;--bg:#07100d;--panel:#0e1b16;--line:#29483a;--gold:#f2c45f;--muted:#9ab4a7;--red:#d95454}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -20%,#173729,#07100d 48%);color:#f6faf8;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button,input{font:inherit}.wrap{width:min(1100px,100%);margin:auto;padding:18px}.hero{min-height:100vh;display:grid;place-items:center}
+.box{width:min(520px,100%);background:#0e1b16f2;border:1px solid var(--line);border-radius:24px;padding:26px;box-shadow:0 30px 90px #0008}
+.brand{font-weight:950;font-size:clamp(34px,7vw,60px);letter-spacing:-.05em}.brand b{color:var(--gold)}.sub{color:var(--muted);margin:7px 0 22px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn,.tabs button{border:1px solid var(--line);background:#13271f;color:#fff;border-radius:14px;padding:13px 15px;font-weight:850;cursor:pointer}
+.tabs button.on,.primary{background:var(--gold)!important;color:#181308!important;border-color:transparent!important}.danger{background:#4a1919!important;border-color:#793232!important}
+.field{display:grid;gap:7px;margin:14px 0}.field label{font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.08em}.field input,.raise{width:100%;padding:14px;border:1px solid var(--line);background:#09140f;color:#fff;border-radius:13px;outline:0}
+.err{background:#491a1a;border:1px solid #813535;color:#ffd2d2;padding:10px 12px;border-radius:12px;margin:10px 0}.hidden{display:none!important}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}.code{border:0;background:transparent;color:var(--gold);font-weight:950;font-size:28px;letter-spacing:.14em;cursor:pointer}
+.stats{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+.table{background:radial-gradient(circle,#17603f,#0d3b29 68%,#08291e);border:8px solid #3a2b1b;box-shadow:inset 0 0 0 2px #7b5a32,0 20px 60px #0008;border-radius:48px;min-height:560px;padding:26px 14px}
+.board{display:flex;justify-content:center;gap:7px;min-height:92px}.pc{width:58px;height:82px;background:#f7f7f3;color:#111;border-radius:9px;display:grid;place-items:center;font-weight:950;font-size:21px;box-shadow:0 5px 12px #0005}.pc.red{color:#c72d2d}.pc.back{background:repeating-linear-gradient(45deg,#203b70,#203b70 7px,#edf2fa 7px,#edf2fa 10px);border:4px solid white}.pc.empty{background:#ffffff0d;border:1px dashed #ffffff44;box-shadow:none}
+.pot{text-align:center;color:#d7e7df;margin:8px 0}.pot b{color:var(--gold);font-size:20px}.result{text-align:center;background:#07130fe8;border:1px solid var(--gold);padding:9px;border-radius:12px;margin:8px auto;max-width:760px}
+.players{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:24px}.seat{background:#07130fe8;border:1px solid #2a5541;border-radius:15px;padding:11px;min-height:135px}.seat.turn{outline:3px solid var(--gold)}.seat.fold{opacity:.5}.seat h3{margin:4px 0;font-size:15px}.money{font-size:21px;font-weight:900}.tiny{font-size:11px;color:var(--muted)}.mini{display:flex;gap:4px;margin-top:7px}.mini .pc{width:34px;height:47px;font-size:12px;border-radius:5px}
+.dock{position:sticky;bottom:0;margin-top:12px;background:#0b1713ed;backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:18px;padding:13px;display:flex;gap:12px;align-items:center;justify-content:space-between}.hand{display:flex;gap:6px}.hand .pc{width:45px;height:63px;font-size:16px}.actions{display:flex;gap:7px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.actions .btn{padding:11px 13px}.raise{width:105px;padding:11px}
+.notice{color:var(--muted);font-size:13px}
+@media(max-width:800px){.wrap{padding:10px}.table{border-width:6px;border-radius:28px;min-height:520px;padding:18px 8px}.players{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.seat{min-height:125px}.board .pc{width:46px;height:66px;font-size:16px}.dock{align-items:flex-start;flex-direction:column}.actions{justify-content:flex-start}.code{font-size:23px}}
+</style>
+</head>
+<body>
+<div id="home" class="hero"><div class="box">
+<div class="brand">QUICK <b>POKER</b></div><div class="sub">共有コードだけで即参加。遊び用チップ専用 Texas Hold'em。</div>
+<div class="tabs"><button id="tc" class="on">部屋を作る</button><button id="tj">コードで参加</button></div>
+<div id="eh" class="err hidden"></div>
+<div class="field"><label>PLAYER NAME</label><input id="name" maxlength="18" placeholder="名前"></div>
+<div id="cf" class="field hidden"><label>ROOM CODE</label><input id="cin" maxlength="6" placeholder="ABC123" style="text-transform:uppercase;letter-spacing:.18em"></div>
+<button id="go" class="btn primary" style="width:100%;margin-top:8px">CREATE TABLE</button>
+</div></div>
+
+<div id="room" class="wrap hidden">
+<header class="top"><div><div class="tiny">TABLE CODE / タップで招待URLコピー</div><button id="rcode" class="code"></button></div><div id="stats" class="stats"></div></header>
+<div id="er" class="err hidden"></div>
+<section class="table">
+<div id="board" class="board"></div><div id="pot" class="pot"></div><div id="result" class="result hidden"></div><div id="players" class="players"></div>
+</section>
+<section class="dock"><div><div class="tiny">YOUR HAND</div><div id="myhand" class="hand"></div></div><div id="actions" class="actions"></div></section>
+</div>
+<script>
+const $=id=>document.getElementById(id),base="https://bwassrcmnzwzrxvwuiyo.supabase.co/functions/v1/quick-poker",site="https://raw.githack.com/hefugu/helo-lab/main/quick-poker/index.html";let mode="create",code="",token="",state=null,busy=false,timer=null;
+function tok(){let a=new Uint8Array(24);crypto.getRandomValues(a);return [...a].map(x=>x.toString(16).padStart(2,"0")).join("")}
+function md(m){mode=m;$("tc").classList.toggle("on",m==="create");$("tj").classList.toggle("on",m==="join");$("cf").classList.toggle("hidden",m!=="join");$("go").textContent=m==="create"?"CREATE TABLE":"JOIN TABLE"}
+$("tc").onclick=()=>md("create");$("tj").onclick=()=>md("join");
+let q=new URLSearchParams(location.search).get("code");if(q){md("join");$("cin").value=q.toUpperCase()}
+function err(id,m){let e=$(id);e.textContent=m||"";e.classList.toggle("hidden",!m)}
+async function api(kind,opt={}){let u=new URL(base);u.searchParams.set("api",kind);if(opt.code)u.searchParams.set("code",opt.code);let h={"content-type":"application/json"};if(token)h["x-player-token"]=token;let r=await fetch(u,{method:opt.method||"GET",headers:h,body:opt.body?JSON.stringify(opt.body):undefined,cache:"no-store"});let d=await r.json();if(!r.ok)throw new Error(d.error||"Request failed");return d}
+$("go").onclick=async()=>{if(busy)return;busy=true;err("eh","");try{let name=$("name").value.trim();token=tok();let d=mode==="create"?await api("create",{method:"POST",body:{name,token}}):await api("join",{method:"POST",body:{name,code:$("cin").value,token}});code=d.code;localStorage.setItem("qp:"+code,token);history.replaceState(null,"",location.pathname+"?room="+code);enter()}catch(e){err("eh",e.message)}finally{busy=false}};
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function card(c){if(!c)return '<div class="pc empty"></div>';if(c==="BACK")return '<div class="pc back"></div>';let sy={S:"♠",H:"♥",D:"♦",C:"♣"}[c[1]],red=c[1]==="H"||c[1]==="D";return '<div class="pc '+(red?"red":"")+'">'+c[0]+sy+"</div>"}
+function render(){if(!state)return;$("rcode").textContent=code;$("stats").innerHTML="<span>"+state.phase.toUpperCase()+"</span><span>HAND "+state.handNo+"</span><span>BET "+state.currentBet+"</span>";
+$("board").innerHTML=[0,1,2,3,4].map(i=>card(state.communityCards[i])).join("");$("pot").innerHTML="POT <b>"+state.pot+"</b>";
+$("result").textContent=state.lastResult?state.lastResult.text:"";$("result").classList.toggle("hidden",!state.lastResult);
+let me=state.players.find(p=>p.id===state.meId);
+$("players").innerHTML=state.players.map(p=>{let hc=p.holeCards&&p.holeCards.length?p.holeCards.map(card).join(""):(p.inHand&&!p.folded?card("BACK")+card("BACK"):"");return '<div class="seat '+(p.seat===state.currentTurnSeat?"turn ":"")+(p.folded?"fold":"")+'"><div class="tiny">SEAT '+(p.seat+1)+(p.seat===state.dealerSeat?" / DEALER":"")+'</div><h3>'+esc(p.name)+(p.id===state.meId?" / YOU":"")+'</h3><div class="money">'+p.chips+' <span class="tiny">chips</span></div><div class="tiny">'+(p.currentBet?"BET "+p.currentBet+" / ":"")+(p.folded?"FOLDED":p.allIn?"ALL IN":p.seat===state.currentTurnSeat?"ACTION":p.inHand?"IN HAND":"WAITING")+'</div><div class="mini">'+hc+"</div></div>"}).join("");
+$("myhand").innerHTML=me&&me.holeCards&&me.holeCards.length?me.holeCards.map(card).join(""):card("BACK")+card("BACK");actions(me)}
+function actions(me){let a=$("actions"),host=state.hostPlayerId===state.meId,canStart=host&&["lobby","showdown"].includes(state.phase)&&state.players.filter(p=>p.chips>0).length>=2,myTurn=me&&me.seat===state.currentTurnSeat;
+if(canStart){a.innerHTML='<button class="btn primary" data-a="start_hand">START HAND</button>'}
+else if(myTurn){let call=Math.max(0,state.currentBet-me.currentBet),min=state.currentBet+state.minRaise,max=me.currentBet+me.chips;a.innerHTML='<button class="btn danger" data-a="fold">FOLD</button>'+(call===0?'<button class="btn" data-a="check">CHECK</button>':'<button class="btn" data-a="call">CALL '+Math.min(call,me.chips)+'</button>')+'<input id="rv" class="raise" type="number" min="'+min+'" max="'+max+'" placeholder="'+min+'"><button class="btn primary" id="rb">RAISE</button>';$("rb").onclick=()=>act({type:"raise",amount:Number($("rv").value)})}
+else a.innerHTML='<div class="notice">'+(state.phase==="lobby"?(host?"2人以上で開始できます":"ホストの開始待ち"):state.phase==="showdown"?"次のハンド待ち":"ほかのプレイヤーのアクション待ち")+"</div>";
+a.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>act({type:b.dataset.a}))}
+async function load(){if(!code||!token)return;try{state=await api("room",{code});err("er","");render()}catch(e){err("er",e.message)}}
+async function act(x){if(busy)return;busy=true;try{state=await api("action",{method:"POST",code,body:x});err("er","");render()}catch(e){err("er",e.message);await load()}finally{busy=false}}
+async function enter(){$("home").classList.add("hidden");$("room").classList.remove("hidden");$("rcode").onclick=async()=>{await navigator.clipboard.writeText(site+"?code="+code);$("rcode").textContent="COPIED";setTimeout(()=>$("rcode").textContent=code,700)};await load();timer=setInterval(load,1200)}
+let open=new URLSearchParams(location.search).get("room");if(open){code=open.toUpperCase();token=localStorage.getItem("qp:"+code)||"";if(token)enter();else{history.replaceState(null,"",location.pathname+"?code="+code);md("join");$("cin").value=code}}
+</script>
+</body></html>
